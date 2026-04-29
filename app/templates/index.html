@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Resume Match</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand"></div>
+      <nav class="topnav">
+        <a href="#">Dashboard</a>
+        <a href="#">Matches</a>
+        <a href="#">Technology</a>
+      </nav>
+      <div class="top-actions">
+        <span class="status-dot"></span>
+        <span class="muted">Live</span>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero">
+        <div class="pill">
+          <span class="pulse"></span>
+          <span>Next-Gen Career AI</span>
+        </div>
+        <h1>Find the strongest job match for any resume.</h1>
+        <p>
+          Precision-matched roles, calibrated confidence, and clear improvement steps
+          for every candidate profile.
+        </p>
+      </section>
+
+      <section class="panel form-panel">
+        <div class="upload-card">
+          <div class="upload-box">
+            <div class="upload-icon">&#x2601;</div>
+            <div>
+              <h3>Drop your resume here</h3>
+              <p>PDF, DOCX, or TXT files supported.</p>
+            </div>
+            <label class="upload-button" for="resumeFile">Select file</label>
+            <input id="resumeFile" type="file" accept=".pdf,.docx,.txt" />
+          </div>
+          <p id="selectedFileName" class="file-name">No file selected.</p>
+          <div class="upload-meta">
+            <span>Privacy-first processing</span>
+            <span>Instant analysis</span>
+          </div>
+          <div class="upload-actions">
+            <button id="uploadBtn" class="ghost">Upload Resume</button>
+            <span id="uploadStatus" class="muted"></span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label for="jobDescriptionSelect">Job Description Template</label>
+          <select id="jobDescriptionSelect">
+            <option value="">Select a predefined job description</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button id="analyzeBtn" class="primary">Analyze</button>
+        </div>
+      </section>
+
+      <section id="resultSection" class="panel hidden">
+        <header class="results-header">
+          <div>
+            <p class="eyebrow compact">Match Results</p>
+            <h2>Analysis Dashboard</h2>
+          </div>
+          <p id="categoryText" class="muted"></p>
+        </header>
+
+        <section class="spotlight-card">
+          <div>
+            <p class="spot-label">Best Suitable Job</p>
+            <h3 id="bestJobTitle">-</h3>
+            <p id="bestJobMeta" class="muted">-</p>
+            <p id="bestJobReason" class="spot-reason">-</p>
+          </div>
+          <div class="spot-confidence">
+            <span>Recommendation confidence</span>
+            <strong id="bestJobConfidence">0%</strong>
+            <div class="progress-wrap spotlight-bar">
+              <div id="bestJobBar" class="progress secondary"></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="metrics-grid">
+          <article class="metric-card">
+            <h3>Overall Score</h3>
+            <div class="progress-wrap">
+              <div id="overallBar" class="progress"></div>
+            </div>
+            <p id="overallValue" class="metric-value">0%</p>
+          </article>
+
+          <article class="metric-card">
+            <h3>Semantic Similarity</h3>
+            <div class="progress-wrap">
+              <div id="similarityBar" class="progress accent"></div>
+            </div>
+            <p id="similarityValue" class="metric-value">0%</p>
+          </article>
+
+          <article class="metric-card">
+            <h3>Skill Match</h3>
+            <div class="progress-wrap">
+              <div id="skillBar" class="progress accent"></div>
+            </div>
+            <p id="skillValue" class="metric-value">0%</p>
+          </article>
+
+          <article class="metric-card">
+            <h3>JD Fit Score</h3>
+            <div class="progress-wrap">
+              <div id="jdFitBar" class="progress"></div>
+            </div>
+            <p id="jdFitValue" class="metric-value">0%</p>
+          </article>
+        </div>
+
+        <div id="uncertaintyBanner" class="alert hidden"></div>
+
+        <section class="insight-grid">
+          <article class="insight-card">
+            <header>
+              <h3>Match Momentum</h3>
+              <span class="muted">Signal trend</span>
+            </header>
+            <svg class="sparkline" viewBox="0 0 120 40" aria-hidden="true">
+              <polyline points="0,30 20,20 40,24 60,12 80,16 100,8 120,14"></polyline>
+            </svg>
+          </article>
+          <article class="insight-card">
+            <header>
+              <h3>Skill Coverage</h3>
+              <span class="muted">Compared to JD</span>
+            </header>
+            <div class="bar-stack">
+              <span style="width: 72%"></span>
+            </div>
+          </article>
+          <article class="insight-card">
+            <header>
+              <h3>Quality Signal</h3>
+              <span class="muted">Resume structure</span>
+            </header>
+            <div class="radial">
+              <span></span>
+            </div>
+          </article>
+        </section>
+
+        <div class="lists-grid">
+          <article class="list-card">
+            <h3>Strengths</h3>
+            <ul id="strengths"></ul>
+          </article>
+
+          <article class="list-card">
+            <h3>Weaknesses</h3>
+            <ul id="weaknesses"></ul>
+          </article>
+
+          <article class="list-card full">
+            <h3>Suggestions</h3>
+            <ul id="suggestions"></ul>
+          </article>
+
+          <article class="list-card">
+            <h3>Structure Flow</h3>
+            <p id="flowScoreText" class="meta-line">Flow score: 0%</p>
+            <p id="flowMeaningText" class="meta-line">Flow in a resume means the order of sections.</p>
+            <p id="flowCurrentText" class="meta-line">Current flow: -</p>
+            <p id="flowRecommendedText" class="meta-line">Recommended flow: Summary -> Skills -> Experience -> Projects -> Education -> Courses -> Languages</p>
+            <p id="flowFeedbackText" class="meta-line">No flow feedback yet.</p>
+          </article>
+
+          <article class="list-card">
+            <h3>Top-2 Predictions</h3>
+            <p class="meta-line">Quality</p>
+            <ul id="top2Quality"></ul>
+            <p class="meta-line">Domain</p>
+            <ul id="top2Domain"></ul>
+          </article>
+
+          <article class="list-card full">
+            <h3>Top Job Matches</h3>
+            <ul id="jobRecommendations"></ul>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
