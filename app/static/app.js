@@ -263,9 +263,7 @@ analyzeBtn.addEventListener("click", async () => {
       : [];
 
     const uncertaintyMessages = [];
-    if (result?.uncertainty?.quality_low_confidence) {
-      uncertaintyMessages.push("Quality prediction confidence is low.");
-    }
+    // Intentionally omit low-confidence text from the banner.
 
     document.getElementById("overallValue").textContent = `${overallPercent}%`;
     document.getElementById("similarityValue").textContent = `${similarityPercent}%`;
